@@ -222,8 +222,6 @@ Now we'll work through each of the seven mental models using method chaining, st
 Let's start by calculating whether each shipment was late:
 
 ```{python}
-#| label: mental-model-1-assign
-#| echo: true
 
 # Simple assignment - calculate if shipment was late
 shipments_with_lateness = (
@@ -260,6 +258,7 @@ print(shipments_with_lateness[['shipID', 'plannedShipDate', 'actualShipDate', 'i
 
 # This code has an error - can you spot it?
 ```{python}
+#| eval: false
 shipments_with_lateness = (
     shipments_df
     .assign(
@@ -307,28 +306,29 @@ print("Datetime comparison:", date1 > date2)
 
 ::: {.callout-tip}
 ## Your Answer: Debug This Code
+The lateStatement assignment fails because it tries to reference shipments_df['is_late'] before the .assign() operation has finished creating that column, leading to a KeyError. Additionally, a standard Python if/else statement is not "vectorized," meaning it cannot process an entire column of data at once.
+
+To fix this, we use a lambda function to reference the "live" state of the DataFrame and np.where() to apply the conditional logic across all rows efficiently.
 ```{python}
-shipments_df = pd.read_csv(
-    "https://raw.githubusercontent.com/flyaflya/persuasive/main/shipments.csv",
-    parse_dates=['plannedShipDate', 'actualShipDate']
-).head(4000)
+import numpy as np
 
-```
-
-**Corrected code:**
-
-```{python}
+# Corrected code
 shipments_with_lateness = (
     shipments_df
     .assign(
         is_late=lambda df: df['actualShipDate'] > df['plannedShipDate'],
         days_late=lambda df: (df['actualShipDate'] - df['plannedShipDate']).dt.days,
-        lateStatement=lambda df: df['is_late'].apply(lambda x: "Darn Shipment is Late" if x else "Shipment is on Time")
+        # Use lambda 'df' to access the new column and np.where for the logic
+        lateStatement=lambda df: np.where(
+            df['is_late'], 
+            "Darn Shipment is Late", 
+            "Shipment is on Time"
+        )
     )
 )
 
 # Preview the result
-shipments_with_lateness.head(10)
+print(shipments_with_lateness[['shipID', 'is_late', 'lateStatement']].head())
 ```
 :::
 ### 2. Subset: Querying Rows and Filtering Columns
@@ -503,7 +503,16 @@ To sort by multiple columns, you can pass a list of columns to `.sort_values()`.
 For example, to sort first by whether a shipment is late and then by how many days late:
 
 ```{python}
-.sort_values(['is_late', 'days_late'], ascending=[False, False]).
+# Question 1: Sorting Strategies
+# We must start with the DataFrame name 'clean_shipments' 
+# and remove the dots at the start and end.
+sorted_multi_example = (
+    clean_shipments
+    .sort_values(['is_late', 'days_late'], ascending=[False, False])
+)
+
+# Preview the result
+print(sorted_multi_example[['shipID', 'is_late', 'days_late']].head())
 ```
 
 :::
