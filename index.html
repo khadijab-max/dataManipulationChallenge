@@ -382,10 +382,10 @@ First few rows of product line data:
 </div>
 <p>Now we’ll work through each of the seven mental models using method chaining, starting simple and building complexity.</p>
 <section id="assign-adding-new-variables" class="level3">
-<h3 class="anchored">1. Assign: Adding New Variables</h3>
+<h3 class="anchored" data-anchor-id="assign-adding-new-variables">1. Assign: Adding New Variables</h3>
 <p><strong>Mental Model:</strong> Create new columns with calculations and transformations.</p>
 <p>Let’s start by calculating whether each shipment was late:</p>
-<div id="646ac057" class="cell" data-execution_count="2">
+<div id="3401630f" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Simple assignment - calculate if shipment was late</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>shipments_with_lateness <span class="op">=</span> (</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    shipments_df</span>
@@ -436,7 +436,7 @@ First few rows of product line data:
 <p><strong>Question 3: Debug This Code</strong></p>
 <section id="this-code-has-an-error---can-you-spot-it" class="level1">
 <h1>This code has an error - can you spot it?</h1>
-<div id="34712008" class="cell" data-execution_count="3">
+<div id="67677e84" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>shipments_with_lateness <span class="op">=</span> (</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    shipments_df</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    .assign(</span>
@@ -461,7 +461,7 @@ First few rows of product line data:
 </div>
 <div class="callout-body-container callout-body">
 <p>*The dtype of the <code>actualShipDate</code> series is <code>datetime64[ns]</code>, which can be verified using:</p>
-<div id="e7268ece" class="cell" data-execution_count="4">
+<div id="15225761" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>shipments_df[<span class="st">'actualShipDate'</span>].dtype</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
 <pre><code>dtype('&lt;M8[us]')</code></pre>
@@ -482,7 +482,7 @@ First few rows of product line data:
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<div id="6326f39b" class="cell" data-execution_count="5">
+<div id="2e4e8241" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Question 2: String vs Date Comparison</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare dates as strings</span></span>
@@ -500,6 +500,8 @@ First few rows of product line data:
 Datetime comparison: True</code></pre>
 </div>
 </div>
+</div>
+</div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -512,7 +514,7 @@ Datetime comparison: True</code></pre>
 <div class="callout-body-container callout-body">
 <p>The lateStatement assignment fails because it tries to reference shipments_df[‘is_late’] before the .assign() operation has finished creating that column, leading to a KeyError. Additionally, a standard Python if/else statement is not “vectorized,” meaning it cannot process an entire column of data at once.</p>
 <p>To fix this, we use a lambda function to reference the “live” state of the DataFrame and np.where() to apply the conditional logic across all rows efficiently.</p>
-<div id="9a18c447" class="cell" data-execution_count="6">
+<div id="9b6f39a0" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Corrected code</span></span>
@@ -543,6 +545,7 @@ Datetime comparison: True</code></pre>
 </div>
 </div>
 </div>
+</section>
 <section id="subset-querying-rows-and-filtering-columns" class="level3">
 <h3 class="anchored" data-anchor-id="subset-querying-rows-and-filtering-columns">2. Subset: Querying Rows and Filtering Columns</h3>
 <p><strong>Mental Model:</strong> Query rows based on conditions and filter to keep specific columns.</p>
@@ -632,7 +635,7 @@ Late shipments sample:
 <div class="callout-body-container callout-body">
 <p>*We can use a variable like <code>late_threshold</code> inside <code>.query()</code> by using the <code>@</code> symbol.</p>
 <p>For example, if we want shipments that are at least 5 days late:</p>
-<div id="08daba32" class="cell" data-execution_count="8">
+<div id="8c4ceb28" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>late_threshold <span class="op">=</span> <span class="dv">5</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>very_late_shipments <span class="op">=</span> (</span>
@@ -819,7 +822,7 @@ Remaining columns: ['shipID', 'plannedShipDate', 'actualShipDate', 'partID', 'is
 <p>*<code>ascending=False</code> sorts values from highest to lowest, while <code>ascending=True</code> sorts values from lowest to highest.</p>
 <p>To sort by multiple columns, you can pass a list of columns to <code>.sort_values()</code>.<br>
 For example, to sort first by whether a shipment is late and then by how many days late:</p>
-<div id="c5992a6b" class="cell" data-execution_count="11">
+<div id="a444c079" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Question 1: Sorting Strategies</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We must start with the DataFrame name 'clean_shipments' </span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co"># and remove the dots at the start and end.</span></span>
@@ -1025,6 +1028,7 @@ Marketables     True  1850  145  0.078    -0.804  21
 SpareParts      True   767  137  0.179    -1.003  21</code></pre>
 </div>
 </div>
+<p>:::</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1068,6 +1072,7 @@ SpareParts      True   767  137  0.179    -1.003  21</code></pre>
 <p>Multi-level grouping is useful when we want to analyze combinations of identifiers or understand patterns at a more granular level.*</p>
 </div>
 </div>
+</section>
 </section>
 <section id="answering-a-business-question" class="level2">
 <h2 class="anchored" data-anchor-id="answering-a-business-question">Answering A Business Question</h2>
@@ -1162,7 +1167,7 @@ Percentage with multiple categories: 23.3%</code></pre>
 <h3 class="anchored" data-anchor-id="service-level-by-product-category-visualization">📊 Service Level by Product Category Visualization</h3>
 <p>This visualization shows the on-time delivery percentage for each product category.<br>
 It helps identify which product categories experience more shipment delays.</p>
-<div id="6f3dc5b6" class="cell" data-execution_count="16">
+<div id="f5de7361" class="cell" data-execution_count="16">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1204,10 +1209,6 @@ It helps identify which product categories experience more shipment delays.</p>
 <li><label><input type="checkbox">Concise analysis that gets to the point</label></li>
 <li><label><input type="checkbox">Code examples where appropriate to support explanations</label></li>
 </ul>
-</section>
-</div>
-</div>
-</section>
 </section>
 </section>
 
