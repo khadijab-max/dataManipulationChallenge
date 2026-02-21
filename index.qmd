@@ -303,6 +303,7 @@ date1 = pd.to_datetime(date_str1)
 date2 = pd.to_datetime(date_str2)
 print("Datetime comparison:", date1 > date2)
 ```
+:::
 
 ::: {.callout-tip}
 ## Your Answer: Debug This Code
@@ -331,6 +332,7 @@ shipments_with_lateness = (
 print(shipments_with_lateness[['shipID', 'is_late', 'lateStatement']].head())
 ```
 :::
+
 ### 2. Subset: Querying Rows and Filtering Columns
 
 **Mental Model:** Query rows based on conditions and filter to keep specific columns.
@@ -660,6 +662,7 @@ service_by_category = (
 print("Service Level by Product Category:")
 print(service_by_category)
 ```
+:::
 
 ::: {.callout-important}
 ## 🤔 Discussion Questions: Split-Apply-Combine Mental Model
