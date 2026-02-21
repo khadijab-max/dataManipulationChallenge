@@ -633,6 +633,7 @@ This tells us how many shipments did not find a matching product category.*
 This happens because pandas performs a many-to-one or many-to-many join. If a single shipment matches multiple rows in `product_line_df`, it will be repeated once for each match.
 
 This can artificially inflate row counts and distort aggregations, leading to incorrect results. For this reason, it is important to ensure that the key column (`partID`) is unique in the lookup table before merging.*
+:::
 
 
 ### 7. Split-Apply-Combine: Group Analysis
